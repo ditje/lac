@@ -1,36 +1,22 @@
 package sample;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Properties;
-import java.util.ResourceBundle;
-
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import javax.sound.midi.Soundbank;
-import javax.swing.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
-public class Controller  {
+public class Controller {
 
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
-
-    @FXML
-    private Button loadConfigFile;
+    String ip;
+    int port;
+    String topic;
+    File selectedFile;
 
     @FXML
     private Label ipValue;
@@ -47,38 +33,40 @@ public class Controller  {
     @FXML
     private AnchorPane anchorPane;
 
-    String ip;
-    int port;
-    String topic;
-
     @FXML
-    void initialize() {
-        loadConfigFile.setOnAction(actionEvent -> {
-            Stage stage = (Stage) anchorPane.getScene().getWindow();
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Выберите конфигурационный файл");
-            fileChooser.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter("Config file", "*.conf", ".cfg", ".ini"));
-            File selectedFile = fileChooser.showOpenDialog(stage);
-            Properties properties = new Properties();
-            try {
-                properties.load(new FileInputStream(new File(String.valueOf(selectedFile))));
-                if ((properties.getProperty("ip") == null) || (properties.getProperty("port") == null) || (properties.getProperty("topic") == null)) {
-                    statusConfig.setText("Не все параметры указаны");
-                } else {
-                    ip = properties.getProperty("ip");
-                    port = Integer.parseInt(properties.getProperty("port"));
-                    topic = properties.getProperty("topic");
-                    statusConfig.setText("Конфиг загружен");
-                    ipValue.setText(ip);
-                    portValue.setText(Integer.toString(port));
-                    topicValue.setText(topic);
-                }
-            } catch (FileNotFoundException e) {
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        });
+    void initialize(){
     }
+
+    public void onClickMethod() {
+        Stage stage = (Stage) anchorPane.getScene().getWindow();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Выберите конфигурационный файл");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Config file", "*.conf", ".cfg", ".ini"));
+        selectedFile = fileChooser.showOpenDialog(stage);
+        ipValue.setText("");
+        portValue.setText("");
+        topicValue.setText("");
+        loadParametersFromConfigFile(selectedFile);
+    }
+
+    public void loadParametersFromConfigFile(File selectedFile){
+        Properties properties = new Properties();
+        try {
+            properties.load(new FileInputStream(new File(String.valueOf(selectedFile))));
+            if ((properties.getProperty("ip") == null) || (properties.getProperty("port") == null) || (properties.getProperty("topic") == null)) {
+                statusConfig.setText("Не все параметры указаны");
+            } else {
+                statusConfig.setText("Конфиг загружен");
+                ipValue.setText(ip = properties.getProperty("ip"));
+                portValue.setText(Integer.toString(port = Integer.parseInt(properties.getProperty("port"))));
+                topicValue.setText(topic = properties.getProperty("topic"));
+            }
+        }catch (IOException e) {
+            ipValue.setText(ip);
+            portValue.setText(Integer.toString(port));
+            topicValue.setText(topic);
+        }
+    };
+
 }

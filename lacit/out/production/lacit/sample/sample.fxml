@@ -11,7 +11,7 @@
     <AnchorPane layoutX="14.0" layoutY="14.0" minHeight="0.0" minWidth="0.0" prefHeight="109.0" prefWidth="176.0" style="-fx-background-color: silver;" AnchorPane.topAnchor="14.0">
          <children>
             <TitledPane animated="false" layoutY="1.0" prefHeight="26.0" prefWidth="166.0" text="Конфигурационный файл" />
-            <Button fx:id="loadConfigFile" layoutX="38.0" layoutY="55.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="100.0" text="Загрузить" />
+            <Button onAction="#onClickMethod" layoutX="38.0" layoutY="55.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="100.0" text="Загрузить" />
          </children>
       </AnchorPane>
       <TextField layoutX="89.0" layoutY="341.0" prefHeight="25.0" prefWidth="218.0" promptText="Введите сообщение" />
