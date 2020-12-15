@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Message",
+  "type": "object",
+  "properties": {
+    "topic": {
+      "description": "topic of message",
+      "type": "string"
+    },
+    "text": {
+      "description": "text of message",
+      "type": "string"
+    },
+    "validation": {
+      "type": "boolean"
+    }
+  },
+  "required":["topic", "text", "validation"]}
