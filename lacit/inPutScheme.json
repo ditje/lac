@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Message",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "The unique identifier for a messages",
+      "type": "integer"
+    },
+    "text": {
+      "description": "text of message",
+      "type": "string"
+    }
+  },
+  "required":["id", "text"]}
