@@ -9,16 +9,18 @@ import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 
 public class ControllerTest {
 
     @Test
     public void loadParametersFromConfigFile() throws IOException {
-//        Controller controller = new Controller();
-//        selectedFile = (new File(".\\src\\test\\resources\\testFileWithProperties.conf"));
-//        controller.loadParametersFromConfigFile(getSelectedFile());
-//        System.out.println(getIp() + getTopic() + getPort());
+//        FXMLLoader loader = new FXMLLoader();
+//        loader.setLocation(getClass().getResource("/sample.fxml"));
+//        Controller controller = loader.getController();
+//        File selectedFile = (new File(".\\src\\test\\resources\\testFileWithProperties.conf"));
+//        controller.loadParametersFromConfigFile(selectedFile);
     }
 
     @Test
@@ -30,7 +32,10 @@ public class ControllerTest {
 
     @Test
     public void testLoadJSONFileNull() throws IOException {
-        Controller controller = new Controller();
-        Assert.assertNull(controller.loadJSONFile("unknown path"));
+//        FXMLLoader loader = new FXMLLoader();
+//        loader.setLocation(getClass().getResource(".\\src\\main\\resources\\sample.fxml"));
+//        Controller controller = loader.getController();
+//        Assert.assertNotNull(controller.loadJSONFile("asda"));
+
     }
 }

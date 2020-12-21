@@ -1,5 +1,7 @@
 package net.lacit;
 
+import com.fasterxml.jackson.databind.util.ISO8601Utils;
+import com.sun.xml.internal.ws.api.ResourceLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -11,15 +13,22 @@ import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.w3c.dom.ls.LSOutput;
 
+import javax.print.DocFlavor;
+import java.awt.*;
 import java.io.*;
-import java.lang.reflect.Field;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 public class Controller {
-    private static final String INPUT_SCHEMA_PATH = ".\\src\\main\\resources\\inPutSchema.json";
-    private static final String OUTPUT_SCHEMA_PATH = ".\\src\\main\\resources\\outPutSchema.json";
-    private static final String MESSAGE_PATH = ".\\src\\main\\resources\\message.json";
+    private final String INPUT_SCHEMA_PATH = (getClass().getResource("/inPutSchema.json").getPath());
+    private final String OUTPUT_SCHEMA_PATH = (getClass().getResource("/outPutSchema.json").getPath());
+    //private final String MESSAGE_PATH = String.valueOf(getClass().getResource("/message.json"));
 
     private String ip;
     private int port;
@@ -78,7 +87,7 @@ public class Controller {
 
     //загрузка конфига
     @FXML
-    private void onClickLoadConfigButton() throws FileNotFoundException {
+    private void loadConfigButton() throws FileNotFoundException {
         Stage stage = (Stage) anchorPane.getScene().getWindow();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Выберите конфигурационный файл");
@@ -92,10 +101,29 @@ public class Controller {
 
     //загрузка и проверка сообщения
     @FXML
-    private void onLoadMessageButton() {
-        message = loadJSONFile(MESSAGE_PATH);
+    private void loadMessageButton() {
+        message = loadMessageFromServer();
         validateMessage(INPUT_SCHEMA_PATH);
         validateOutPutMessage(OUTPUT_SCHEMA_PATH);
+    }
+
+    //загрузить сообщение в другой токен
+    @FXML
+    public void loadMessageToServer() {
+    }
+
+    //загрузка сообщение с сервера
+    @FXML
+    public JSONObject loadMessageFromServer() {
+        JSONObject jsonObject = null;
+        try (Socket clientSocket = new Socket(InetAddress.getLocalHost(), 8080)) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            jsonObject = new JSONObject(in.readLine());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
     }
 
     //загрузка параметров из конфигурационного файла
@@ -171,5 +199,4 @@ public class Controller {
         }
         writeMessage("outPutMessage.json");
     }
-
 }
